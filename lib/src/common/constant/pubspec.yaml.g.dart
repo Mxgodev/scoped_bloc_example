@@ -58,7 +58,7 @@ const List<String> pre = <String>[];
 const List<String> build = <String>[r'1'];
 
 /// Build date in Unix Time (in seconds)
-const int timestamp = 1642870672;
+const int timestamp = 1653048334;
 
 /// Name [name]
 const String name = r'scoped_bloc_example';

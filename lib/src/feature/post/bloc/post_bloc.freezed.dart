@@ -553,8 +553,10 @@ class _$PostStateTearOff {
     return const _InitialPostState();
   }
 
-  _AddingTextPostState addingText() {
-    return const _AddingTextPostState();
+  _AddingTextPostState addingText({required String text}) {
+    return _AddingTextPostState(
+      text: text,
+    );
   }
 
   _HasTextPostState hasText({required String text}) {
@@ -563,9 +565,11 @@ class _$PostStateTearOff {
     );
   }
 
-  _AttachingFilePostState attachingFile({required String text}) {
+  _AttachingFilePostState attachingFile(
+      {required String text, required String path}) {
     return _AttachingFilePostState(
       text: text,
+      path: path,
     );
   }
 
@@ -611,9 +615,9 @@ mixin _$PostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
@@ -623,9 +627,9 @@ mixin _$PostState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -635,9 +639,9 @@ mixin _$PostState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -741,9 +745,9 @@ class _$_InitialPostState extends _InitialPostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
@@ -756,9 +760,9 @@ class _$_InitialPostState extends _InitialPostState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -771,9 +775,9 @@ class _$_InitialPostState extends _InitialPostState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -846,6 +850,7 @@ abstract class _$AddingTextPostStateCopyWith<$Res> {
   factory _$AddingTextPostStateCopyWith(_AddingTextPostState value,
           $Res Function(_AddingTextPostState) then) =
       __$AddingTextPostStateCopyWithImpl<$Res>;
+  $Res call({String text});
 }
 
 /// @nodoc
@@ -858,64 +863,88 @@ class __$AddingTextPostStateCopyWithImpl<$Res>
 
   @override
   _AddingTextPostState get _value => super._value as _AddingTextPostState;
+
+  @override
+  $Res call({
+    Object? text = freezed,
+  }) {
+    return _then(_AddingTextPostState(
+      text: text == freezed
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_AddingTextPostState extends _AddingTextPostState {
-  const _$_AddingTextPostState() : super._();
+  const _$_AddingTextPostState({required this.text}) : super._();
+
+  @override
+  final String text;
 
   @override
   String toString() {
-    return 'PostState.addingText()';
+    return 'PostState.addingText(text: $text)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _AddingTextPostState);
+        (other.runtimeType == runtimeType &&
+            other is _AddingTextPostState &&
+            const DeepCollectionEquality().equals(other.text, text));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(text));
+
+  @JsonKey(ignore: true)
+  @override
+  _$AddingTextPostStateCopyWith<_AddingTextPostState> get copyWith =>
+      __$AddingTextPostStateCopyWithImpl<_AddingTextPostState>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
     required TResult Function(String? text, String? path, String message) error,
   }) {
-    return addingText();
+    return addingText(text);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
     TResult Function(String? text, String? path, String message)? error,
   }) {
-    return addingText?.call();
+    return addingText?.call(text);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -923,7 +952,7 @@ class _$_AddingTextPostState extends _AddingTextPostState {
     required TResult orElse(),
   }) {
     if (addingText != null) {
-      return addingText();
+      return addingText(text);
     }
     return orElse();
   }
@@ -979,8 +1008,14 @@ class _$_AddingTextPostState extends _AddingTextPostState {
 }
 
 abstract class _AddingTextPostState extends PostState {
-  const factory _AddingTextPostState() = _$_AddingTextPostState;
+  const factory _AddingTextPostState({required String text}) =
+      _$_AddingTextPostState;
   const _AddingTextPostState._() : super._();
+
+  String get text;
+  @JsonKey(ignore: true)
+  _$AddingTextPostStateCopyWith<_AddingTextPostState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1049,9 +1084,9 @@ class _$_HasTextPostState extends _HasTextPostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
@@ -1064,9 +1099,9 @@ class _$_HasTextPostState extends _HasTextPostState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1079,9 +1114,9 @@ class _$_HasTextPostState extends _HasTextPostState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1159,7 +1194,7 @@ abstract class _$AttachingFilePostStateCopyWith<$Res> {
   factory _$AttachingFilePostStateCopyWith(_AttachingFilePostState value,
           $Res Function(_AttachingFilePostState) then) =
       __$AttachingFilePostStateCopyWithImpl<$Res>;
-  $Res call({String text});
+  $Res call({String text, String path});
 }
 
 /// @nodoc
@@ -1176,11 +1211,16 @@ class __$AttachingFilePostStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? text = freezed,
+    Object? path = freezed,
   }) {
     return _then(_AttachingFilePostState(
       text: text == freezed
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      path: path == freezed
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -1189,14 +1229,17 @@ class __$AttachingFilePostStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_AttachingFilePostState extends _AttachingFilePostState {
-  const _$_AttachingFilePostState({required this.text}) : super._();
+  const _$_AttachingFilePostState({required this.text, required this.path})
+      : super._();
 
   @override
   final String text;
+  @override
+  final String path;
 
   @override
   String toString() {
-    return 'PostState.attachingFile(text: $text)';
+    return 'PostState.attachingFile(text: $text, path: $path)';
   }
 
   @override
@@ -1204,12 +1247,15 @@ class _$_AttachingFilePostState extends _AttachingFilePostState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AttachingFilePostState &&
-            const DeepCollectionEquality().equals(other.text, text));
+            const DeepCollectionEquality().equals(other.text, text) &&
+            const DeepCollectionEquality().equals(other.path, path));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(text));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(text),
+      const DeepCollectionEquality().hash(path));
 
   @JsonKey(ignore: true)
   @override
@@ -1221,39 +1267,39 @@ class _$_AttachingFilePostState extends _AttachingFilePostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
     required TResult Function(String? text, String? path, String message) error,
   }) {
-    return attachingFile(text);
+    return attachingFile(text, path);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
     TResult Function(String? text, String? path, String message)? error,
   }) {
-    return attachingFile?.call(text);
+    return attachingFile?.call(text, path);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1261,7 +1307,7 @@ class _$_AttachingFilePostState extends _AttachingFilePostState {
     required TResult orElse(),
   }) {
     if (attachingFile != null) {
-      return attachingFile(text);
+      return attachingFile(text, path);
     }
     return orElse();
   }
@@ -1317,11 +1363,12 @@ class _$_AttachingFilePostState extends _AttachingFilePostState {
 }
 
 abstract class _AttachingFilePostState extends PostState {
-  const factory _AttachingFilePostState({required String text}) =
-      _$_AttachingFilePostState;
+  const factory _AttachingFilePostState(
+      {required String text, required String path}) = _$_AttachingFilePostState;
   const _AttachingFilePostState._() : super._();
 
   String get text;
+  String get path;
   @JsonKey(ignore: true)
   _$AttachingFilePostStateCopyWith<_AttachingFilePostState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1406,9 +1453,9 @@ class _$_HasTextAndFilePostState extends _HasTextAndFilePostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
@@ -1421,9 +1468,9 @@ class _$_HasTextAndFilePostState extends _HasTextAndFilePostState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1436,9 +1483,9 @@ class _$_HasTextAndFilePostState extends _HasTextAndFilePostState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1591,9 +1638,9 @@ class _$_SendingPostState extends _SendingPostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
@@ -1606,9 +1653,9 @@ class _$_SendingPostState extends _SendingPostState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1621,9 +1668,9 @@ class _$_SendingPostState extends _SendingPostState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1773,9 +1820,9 @@ class _$_SentPostState extends _SentPostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
@@ -1788,9 +1835,9 @@ class _$_SentPostState extends _SentPostState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1803,9 +1850,9 @@ class _$_SentPostState extends _SentPostState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1969,9 +2016,9 @@ class _$_ErrorPostState extends _ErrorPostState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() addingText,
+    required TResult Function(String text) addingText,
     required TResult Function(String text) hasText,
-    required TResult Function(String text) attachingFile,
+    required TResult Function(String text, String path) attachingFile,
     required TResult Function(String text, String path) hasTextAndFile,
     required TResult Function(String text, String path) sending,
     required TResult Function(String text, String path) sent,
@@ -1984,9 +2031,9 @@ class _$_ErrorPostState extends _ErrorPostState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,
@@ -1999,9 +2046,9 @@ class _$_ErrorPostState extends _ErrorPostState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? addingText,
+    TResult Function(String text)? addingText,
     TResult Function(String text)? hasText,
-    TResult Function(String text)? attachingFile,
+    TResult Function(String text, String path)? attachingFile,
     TResult Function(String text, String path)? hasTextAndFile,
     TResult Function(String text, String path)? sending,
     TResult Function(String text, String path)? sent,

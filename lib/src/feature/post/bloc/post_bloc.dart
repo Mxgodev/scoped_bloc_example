@@ -40,7 +40,7 @@ class PostEvent with _$PostEvent {
   @With<_ErrorEmitter>()
   const factory PostEvent.send() = _SendPostEvent;
 
-  //const factory PostEvent.cancel() = _CancelPostEvent;
+//const factory PostEvent.cancel() = _CancelPostEvent;
 }
 
 @freezed
@@ -60,9 +60,9 @@ class PostState with _$PostState {
 
   String? get text => when<String?>(
         initial: () => null,
-        addingText: () => null,
+        addingText: (text) => text,
         hasText: (text) => text,
-        attachingFile: (text) => text,
+        attachingFile: (text, _) => text,
         hasTextAndFile: (text, _) => text,
         sending: (text, _) => text,
         sent: (text, _) => text,
@@ -71,9 +71,9 @@ class PostState with _$PostState {
 
   String? get path => when<String?>(
         initial: () => null,
-        addingText: () => null,
+        addingText: (_) => null,
         hasText: (_) => null,
-        attachingFile: (_) => null,
+        attachingFile: (_, path) => null,
         hasTextAndFile: (_, path) => path,
         sending: (_, path) => path,
         sent: (_, path) => path,
@@ -84,7 +84,9 @@ class PostState with _$PostState {
   const factory PostState.initial() = _InitialPostState;
 
   /// Выполняется добавление текста
-  const factory PostState.addingText() = _AddingTextPostState;
+  const factory PostState.addingText({
+    required String text,
+  }) = _AddingTextPostState;
 
   /// Текст добавлен, ожидаем файл
   const factory PostState.hasText({
@@ -94,6 +96,7 @@ class PostState with _$PostState {
   /// Добавляем файл
   const factory PostState.attachingFile({
     required String text,
+    required String path,
   }) = _AttachingFilePostState;
 
   /// Файл добавлен, есть текст и файл, ожидаем отправки
@@ -138,10 +141,10 @@ class PostBLoC extends Bloc<PostEvent, PostState> {
     try {
       emitter(event.addingText());
       // ... логика добавления текста await _repository.addText(text: event.text);
-      emitter(event.hasText());
+      emitter(event.hasText(state));
     } on TimeoutException {
       emitter(event.error(state: state, message: 'Некритичная ошибка'));
-      emitter(event.hasText());
+      emitter(event.hasText(state));
     } on Object {
       emitter(event.error(state: state, message: 'Непредвиденная ошибка при добавлении текста'));
       emitter(event.initial());
@@ -156,7 +159,7 @@ class PostBLoC extends Bloc<PostEvent, PostState> {
       emitter(event.hasTextAndFile(state: state));
     } on Object catch (error, stackTrace) {
       emitter(event.error(state: state, message: 'Непредвиденная ошибка при добавлении файла'));
-      emitter(event.hasText());
+      emitter(event.hasText(state));
       rethrow;
     }
   }
@@ -192,12 +195,12 @@ mixin _InitialStateEmitter on PostEvent {
   PostState initial() => const PostState.initial();
 }
 
-mixin _AddingTextEmitter on PostEvent {
-  PostState addingText() => const PostState.addingText();
+mixin _AddingTextEmitter on PostEvent implements _TextContainer {
+  PostState addingText() => PostState.addingText(text: text);
 }
 
-mixin _HasTextEmitter on PostEvent implements _TextContainer {
-  PostState hasText() => PostState.hasText(text: text);
+mixin _HasTextEmitter on PostEvent {
+  PostState hasText(final PostState state) => PostState.hasText(text: state.text!);
 }
 
 mixin _ErrorEmitter on PostEvent {
@@ -208,17 +211,17 @@ mixin _ErrorEmitter on PostEvent {
       );
 }
 
-mixin _AttachingFileEmitter on PostEvent {
+mixin _AttachingFileEmitter on PostEvent implements _FileContainer {
   PostState attachingFile({required PostState state}) {
     assert(state.text != null, 'Нельзя добавлять файл, если текста еще не существует');
-    return PostState.attachingFile(text: state.text!);
+    return PostState.attachingFile(text: state.text!, path: path);
   }
 }
 
-mixin _HasTextAndFileEmitter on PostEvent implements _FileContainer {
+mixin _HasTextAndFileEmitter on PostEvent {
   PostState hasTextAndFile({required PostState state}) {
     assert(state.text != null, 'Нельзя добавлять файл, если текста еще не существует');
-    return PostState.hasTextAndFile(text: state.text!, path: path);
+    return PostState.hasTextAndFile(text: state.text!, path: state.path!);
   }
 }
 
